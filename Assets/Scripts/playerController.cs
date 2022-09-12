@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class playerController : MonoBehaviour
 {
     public float speed = 0;
+    public TextMeshProUGUI countText;
+    public GameObject winText;
 
     //create a slider to adjust the variable
     //only affect the varible bellow this line
@@ -14,6 +17,8 @@ public class playerController : MonoBehaviour
     private Rigidbody r_body;
     private float move_x;
     private float move_y;
+
+    //record score
     private int count;
 
     // Start is called before the first frame update
@@ -22,6 +27,8 @@ public class playerController : MonoBehaviour
         //connect the r_body to the player object's rigidbody component
         r_body = GetComponent<Rigidbody>();
         count = 0;
+        setCountText();
+        winText.SetActive(false);
     }
 
     //Send data to the game and move the object
@@ -34,6 +41,16 @@ public class playerController : MonoBehaviour
         Vector2 movementVector = movement.Get<Vector2>();
         move_x = movementVector.x;
         move_y = movementVector.y;
+
+    }
+
+    void setCountText()
+    {
+        countText.text = "Score:" + count.ToString();
+
+        if(count >= 10){
+            winText.SetActive(true);
+        }
 
     }
 
@@ -60,6 +77,8 @@ public class playerController : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             count ++;
+
+            setCountText();
         }
     }
 }
